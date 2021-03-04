@@ -27,7 +27,7 @@ export class CreateProductDto{
 
     @IsNotEmpty()
     @IsNumberString()
-    centamount: number;
+    centAmount: number;
 
     @IsNotEmpty()
     @IsNumberString()

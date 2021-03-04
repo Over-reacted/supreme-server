@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { IProduct } from "./product.model";
 import { CreateProductDto } from "./dto/create-product.dto";
+import { privateEncrypt } from "crypto";
 
 @Injectable()
 export class ProductsRepository {
@@ -10,18 +11,17 @@ export class ProductsRepository {
 
   async createProduct(createProductDto: CreateProductDto): Promise<IProduct>{
 
-    const {name, slug, material, color, description, currency, centamount, fractionDigits, image} = createProductDto;
+    const {name, slug, material, color, description, currency, centAmount, fractionDigits, image} = createProductDto;
     let createdProduct = new this.productModel({
         name,
         slug,
         material,
         color,
         description,
-        currency,
-        centamount,
-        fractionDigits,
+        price:{currency, centAmount, fractionDigits},
         image,
     });
+
     return await createdProduct.save();
   }
 }
