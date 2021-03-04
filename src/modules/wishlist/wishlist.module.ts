@@ -5,6 +5,7 @@ import { WishlistRepository } from './wishlist.repository';
 import { Wishlist } from './wishlist.model';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product } from 'modules/products/product.model';
+import { ProductsRepository } from 'modules/products/products.repository';
 
 @Module({
   imports: 
@@ -14,6 +15,6 @@ import { Product } from 'modules/products/product.model';
   ],
 
   controllers: [WishlistController],
-  providers: [WishlistRepository,WishlistService]
+  providers: [WishlistRepository,ProductsRepository,WishlistService]
 })
 export class WishlistModule {}

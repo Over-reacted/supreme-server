@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { WishlistService } from './wishlist.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -20,5 +20,10 @@ export class WishlistController {
     @Post('/:id')
     async addToWishlist(@Param('id') productId: string): Promise<void>{
         return await this.wishlistService.addToWishlist(productId);
+    }
+
+    @Delete('/:id')
+    async removeFromWishlist(@Param('id') productId: string): Promise<void>{
+        return await this.wishlistService.removeFromWishlist(productId);
     }
 }

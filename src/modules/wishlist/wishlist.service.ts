@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { IWishlist } from './wishlist.model';
 import { WishlistRepository } from './wishlist.repository';
 import { IProduct } from 'modules/products/product.model';
+import { ProductsRepository } from 'modules/products/products.repository';
 
 @Injectable()
 export class WishlistService {
@@ -11,6 +12,7 @@ export class WishlistService {
         @InjectModel("Wishlist") private readonly wishlistModel: Model<IWishlist>,
         private wishlistRepository: WishlistRepository,
         @InjectModel("Product") private readonly productModel: Model<IProduct>,
+        private productsRepository: ProductsRepository,
       ) {}
 
 
@@ -22,12 +24,15 @@ export class WishlistService {
     async addToWishlist(productId: string): Promise<void>{
         let wishlist = await this.getCurrentWishlist();
 
-        let product = await this.productModel.findById(productId);
-        if(!product){
-            throw new NotFoundException("Product with such ID not found");
-        }
+        let product = await this.productsRepository.getProductById(productId);
         wishlist.products.push(product);
         wishlist.save();
+    }
+
+    async removeFromWishlist(productId: string): Promise<void>{
+        let wishlist = await this.getCurrentWishlist();
+        wishlist.products = wishlist.products.filter(product => product._id.toString() !== productId);
+        await wishlist.save();
     }
 
     private async getCurrentWishlist(): Promise<IWishlist>{
