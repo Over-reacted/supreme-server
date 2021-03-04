@@ -1,5 +1,5 @@
-import { Controller, Get, Post, ValidationPipe, UsePipes, Body, Delete, Param, Query } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
+import { Controller, Get, Post, ValidationPipe, UsePipes, Body, Delete, Param, Query, Put } from '@nestjs/common';
+import { ProductDto } from './dto/product.dto';
 import { ProductsService } from './products.service';
 import { IProduct } from './product.model';
 
@@ -12,7 +12,7 @@ export class ProductsController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    async createProduct(@Body() createProductDto: CreateProductDto){
+    async createProduct(@Body() createProductDto: ProductDto){
         return await this.productService.createProduct(createProductDto);
     }
 
@@ -29,5 +29,10 @@ export class ProductsController {
     @Delete('/:id')
     async deleteProductById(@Param('id') id: string): Promise<IProduct>{
         return await this.productService.deleteProductById(id);
+    }
+
+    @Put('/:id')
+    async updateProduct(@Param('id') id: string, @Body() updateProductDto: ProductDto): Promise<IProduct>{
+        return await this.productService.updateProduct(id, updateProductDto);
     }
 }

@@ -1,15 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { IProduct } from "./product.model";
-import { CreateProductDto } from "./dto/create-product.dto";
+import { ProductDto } from "./dto/product.dto";
 import { privateEncrypt } from "crypto";
 
 @Injectable()
 export class ProductsRepository {
   constructor(@InjectModel("Product") private readonly productModel: Model<IProduct>) {}
 
-  async createProduct(createProductDto: CreateProductDto): Promise<IProduct>{
+  async createProduct(createProductDto: ProductDto): Promise<IProduct>{
 
     const {name, slug, material, color, description, currency, centAmount, fractionDigits, image} = createProductDto;
     let createdProduct = new this.productModel({
@@ -23,5 +23,14 @@ export class ProductsRepository {
     });
 
     return await createdProduct.save();
+  }
+
+  async findProductById(productId: string): Promise<IProduct>{
+      let product = this.productModel.findById(productId);
+      if(!product){
+          throw new NotFoundException("Product with such id not found");
+      }
+      
+      return product;
   }
 }
