@@ -20,10 +20,19 @@ export class ProductsService {
           return await this.productModel.find();
       }
 
+      async getProductById(id: string): Promise<IProduct>{
+          let product = await this.productModel.findById(id);
+          if(!product){
+              throw new NotFoundException("Product not found");
+          }
+
+          return product;
+      }
+
       async deleteProductById(id: string): Promise<IProduct>{
           try {
             let result = await this.productModel.findByIdAndDelete(id);
-            
+
             if(!result){
                 throw new NotFoundException();
             }
