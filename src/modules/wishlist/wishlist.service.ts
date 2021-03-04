@@ -13,6 +13,12 @@ export class WishlistService {
         @InjectModel("Product") private readonly productModel: Model<IProduct>,
       ) {}
 
+
+    async getWishlist():Promise<IProduct[]>{
+        let wishlist = await this.getCurrentWishlist();
+        return wishlist.products;
+    }
+
     async addToWishlist(productId: string): Promise<void>{
         let wishlist = await this.getCurrentWishlist();
 
@@ -24,7 +30,7 @@ export class WishlistService {
         wishlist.save();
     }
 
-    async getCurrentWishlist(): Promise<IWishlist>{
+    private async getCurrentWishlist(): Promise<IWishlist>{
         //Checks whether a wishlist already exists and if so grabs it
         let wishlist = await this.wishlistModel.find();
         

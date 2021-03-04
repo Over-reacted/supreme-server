@@ -11,6 +11,12 @@ export class WishlistController {
         @InjectModel("Product") private readonly productModel: Model<IProduct>,
         ){}
 
+    
+    @Get()
+    async getWishlist(): Promise<IProduct[]>{
+        return await this.wishlistService.getWishlist();
+    }
+    
     @Post('/:id')
     async addToWishlist(@Param('id') productId: string): Promise<void>{
         return await this.wishlistService.addToWishlist(productId);
