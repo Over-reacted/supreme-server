@@ -1,30 +1,39 @@
-import { IsString, IsNotEmpty, IsCurrency } from "class-validator";
+import { IsString, IsNotEmpty, IsCurrency, IsNumber, IsUrl, IsNumberString } from "class-validator";
 
 export class CreateProductDto{
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @IsNotEmpty()
     @IsString()
     slug: string;
 
+    @IsNotEmpty()
     @IsString()
     material: string;
 
+    @IsNotEmpty()
     @IsString()
     color: string;
 
+    @IsNotEmpty()
     @IsString()
     description: string;
-
-    @IsNotEmpty()
-    @IsCurrency()
-    price: number;
 
     @IsNotEmpty()
     @IsString()
     currency: string;
 
-    @IsString()
+    @IsNotEmpty()
+    @IsNumberString()
+    centamount: number;
+
+    @IsNotEmpty()
+    @IsNumberString()
+    fractionDigits: number;
+
+    @IsNotEmpty()
+    @IsUrl()
     image: string;
 }

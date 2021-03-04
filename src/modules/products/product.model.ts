@@ -10,8 +10,9 @@ export const Product = new Schema({
     material: { type: String, required: true },
     color: { type: String, required: true },
     description: { type: String, required: true },
-    price: { type: Schema.Types.Decimal128, required: true },
     currency: { type: String, required: true },
+    centamount:{ type: Number, required: true },
+    fractionDigits:{ type: Number, required: true },
     image: { type: String, required: true },
   });
 
@@ -22,7 +23,8 @@ export const Product = new Schema({
     material: string;
     color: string;
     description: string;
-    price: number;
     currency: string;
+    centamount: number;
+    fractionDigits: number;
     image: string;
   }

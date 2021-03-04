@@ -10,15 +10,16 @@ export class ProductsRepository {
 
   async createProduct(createProductDto: CreateProductDto): Promise<IProduct>{
 
-    const {name, slug, material, color, description, price, currency, image} = createProductDto;
+    const {name, slug, material, color, description, currency, centamount, fractionDigits, image} = createProductDto;
     let createdProduct = new this.productModel({
         name,
         slug,
         material,
         color,
         description,
-        price,
         currency,
+        centamount,
+        fractionDigits,
         image,
     });
     return await createdProduct.save();
