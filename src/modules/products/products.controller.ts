@@ -1,4 +1,4 @@
-import { Controller, Get, Post, ValidationPipe, UsePipes, Body } from '@nestjs/common';
+import { Controller, Get, Post, ValidationPipe, UsePipes, Body, Delete, Param } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductsService } from './products.service';
 import { IProduct } from './product.model';
@@ -19,5 +19,10 @@ export class ProductsController {
     @Get()
     async getProducts(): Promise<IProduct[]>{
         return await this.productService.getAllProducts();
+    }
+
+    @Delete('/:id')
+    async deleteProductById(@Param('id') id: string){
+        return await this.productService.deleteProductById(id);
     }
 }
