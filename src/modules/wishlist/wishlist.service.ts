@@ -25,7 +25,10 @@ export class WishlistService {
         let wishlist = await this.getCurrentWishlist();
         let product = await this.productsRepository.findProductById(productId);
 
-        if(!wishlist.products.some(p => p._id.toString() === productId)){
+        //Checks if product already exists in the current wishlist
+        let productExists = wishlist.products.some(p => p._id.toString() === productId);
+        
+        if(!productExists){
             wishlist.products.push(product);
             wishlist.count++;
             wishlist.save();
