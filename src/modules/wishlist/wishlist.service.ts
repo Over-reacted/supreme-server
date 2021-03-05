@@ -25,9 +25,11 @@ export class WishlistService {
         let wishlist = await this.getCurrentWishlist();
         let product = await this.productsRepository.findProductById(productId);
 
-        wishlist.products.push(product);
-        wishlist.count++;
-        wishlist.save();
+        if(!wishlist.products.some(p => p._id.toString() === productId)){
+            wishlist.products.push(product);
+            wishlist.count++;
+            wishlist.save();
+        }
     }
 
     async removeFromWishlist(productId: string): Promise<void>{
