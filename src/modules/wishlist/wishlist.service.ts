@@ -23,8 +23,8 @@ export class WishlistService {
 
     async addToWishlist(productId: string): Promise<void>{
         let wishlist = await this.getCurrentWishlist();
-
         let product = await this.productsRepository.findProductById(productId);
+        
         wishlist.products.push(product);
         wishlist.save();
     }
@@ -41,10 +41,9 @@ export class WishlistService {
         
         //Temporary logic to make sure there is one wishlist available at any time.
         //Will be reworked once users are introduced into the project
-        if(!wishlist){
+        if(wishlist.length === 0){
             let createdWishlist = new this.wishlistModel();
-            await createdWishlist.save();
-            wishlist = await this.wishlistModel.find();
+            return await createdWishlist.save();
         }
 
         //Gets the first element since there is only one wishlist available at any time
