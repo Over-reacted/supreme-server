@@ -96,4 +96,24 @@ export class BasketService {
             throw new NotFoundException(`Product with id: ${productId} not found`);
         }
     }
+
+    async setItemQuantity(quantity: number, productId: string){
+        if(quantity === 0){
+            await this.removeFromBasket(productId);
+        }
+        else{
+            let basket = await this.getCurrentBasket();
+            let item = basket.items.find(item => item.product._id.toString() === productId);
+
+            if(item){
+                basket.totalSum.centAmount -= item.product.price.centAmount*item.quantity; //deducts the price of the product.Price*oldQuantity
+                item.quantity = quantity;
+                basket.totalSum.centAmount += item.product.price.centAmount*item.quantity; //adds the price of the product.Price*newQuantity
+                await basket.save();
+            }
+            else{
+                throw new NotFoundException(`Product with id: ${productId} not found in basket`);
+            }
+        }
+    }
 }
