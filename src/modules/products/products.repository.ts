@@ -26,9 +26,10 @@ export class ProductsRepository {
   }
 
   async findProductById(productId: string): Promise<IProduct>{
-      let product = this.productModel.findById(productId);
+      let product = await this.productModel.findById(productId);
+
       if(!product){
-          throw new NotFoundException("Product with such id not found");
+          throw new NotFoundException(`Product with id: ${productId} not found`);
       }
       
       return product;

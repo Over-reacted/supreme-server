@@ -31,13 +31,13 @@ export class ProductsService {
             let result = await this.productModel.findByIdAndDelete(id);
 
             if(!result){
-                throw new NotFoundException();
+                throw new NotFoundException(`Product with id: ${id} not found`);
             }
 
             return result;
           }
           catch (error) {
-              throw new NotFoundException("Invalid id");
+            throw new NotFoundException(`${id} is an invalid ID`);
           }
       }
 
