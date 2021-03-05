@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IBasket, IItem } from './basket.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -43,7 +43,20 @@ export class BasketService {
             basket.totalSum.centAmount += product.price.centAmount;
             basket.numOfItems++;
 
-            return await basket.save();
+            await basket.save();
+        }
+    }
+
+    async increaseItemQuantity(productId: string): Promise<void>{
+        let basket = await this.getCurrentBasket();
+        let item = basket.items.find(item => item.product._id.toString() === productId);
+
+        if(item){
+            item.quantity++;
+            await basket.save();
+        }
+        else{
+            throw new NotFoundException(`Product with id: ${productId} not found`);
         }
     }
 }

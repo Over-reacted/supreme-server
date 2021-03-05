@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { BasketService } from './basket.service';
 
 @Controller('basket')
@@ -11,7 +11,12 @@ export class BasketController {
     }
 
     @Post('/:productId')
-    async addToBasket(@Param('productId') productId: string){
+    async addToBasket(@Param('productId') productId: string): Promise<void>{
         return await this.basketService.addToBasket(productId);
+    }
+
+    @Patch('/:productId/increase')
+    async increaseItemQuantity(@Param('productId') productId: string): Promise<void>{
+        return await this.basketService.increaseItemQuantity(productId);
     }
 }
