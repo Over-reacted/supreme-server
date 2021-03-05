@@ -13,7 +13,7 @@ export class WishlistController {
 
     
     @Get()
-    async getWishlist(): Promise<IProduct[]>{
+    async getWishlist(){
         return await this.wishlistService.getWishlist();
     }
     

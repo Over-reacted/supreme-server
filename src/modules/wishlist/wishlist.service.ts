@@ -16,23 +16,28 @@ export class WishlistService {
       ) {}
 
 
-    async getWishlist():Promise<IProduct[]>{
+    async getWishlist(){
         let wishlist = await this.getCurrentWishlist();
-        return wishlist.products;
+        return {products: wishlist.products, count: wishlist.count};
     }
 
     async addToWishlist(productId: string): Promise<void>{
         let wishlist = await this.getCurrentWishlist();
         let product = await this.productsRepository.findProductById(productId);
-        
+
         wishlist.products.push(product);
+        wishlist.count++;
         wishlist.save();
     }
 
     async removeFromWishlist(productId: string): Promise<void>{
         let wishlist = await this.getCurrentWishlist();
-        wishlist.products = wishlist.products.filter(product => product._id.toString() !== productId);
-        await wishlist.save();
+
+        if(wishlist.count!==0){ //To ensure there is a product
+            wishlist.products = wishlist.products.filter(product => product._id.toString() !== productId);
+            wishlist.count--;
+            await wishlist.save();
+        }
     }
 
     private async getCurrentWishlist(): Promise<IWishlist>{
@@ -42,7 +47,7 @@ export class WishlistService {
         //Temporary logic to make sure there is one wishlist available at any time.
         //Will be reworked once users are introduced into the project
         if(wishlist.length === 0){
-            let createdWishlist = new this.wishlistModel();
+            let createdWishlist = new this.wishlistModel({count: 0});
             return await createdWishlist.save();
         }
 
