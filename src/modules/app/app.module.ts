@@ -12,6 +12,7 @@ import { WinstonModule } from "../winston/winston.module";
 import { AccessControlModule } from "nest-access-control";
 import { roles } from "./app.roles";
 import { ProductsModule } from "modules/products/products.module";
+import { WishlistModule } from "modules/wishlist/wishlist.module";
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { ProductsModule } from "modules/products/products.module";
     AuthModule,
     ProfileModule,
     ProductsModule,
+    WishlistModule,
   ],
   controllers: [AppController],
   providers: [AppService],
