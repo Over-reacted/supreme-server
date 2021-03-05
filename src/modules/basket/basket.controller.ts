@@ -19,4 +19,9 @@ export class BasketController {
     async increaseItemQuantity(@Param('productId') productId: string): Promise<void>{
         return await this.basketService.increaseItemQuantity(productId);
     }
+
+    @Patch('/:productId/decrease')
+    async decreaseItemQuantity(@Param('productId') productId: string): Promise<void>{
+        return await this.basketService.decreaseItemQuantity(productId);
+    }
 }

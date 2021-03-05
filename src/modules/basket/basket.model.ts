@@ -29,5 +29,5 @@ export interface IBasket extends Document{
         fractionDigits: number;
     };
     numOfItems: number;
-    items: [IItem];
+    items: IItem[];
 }

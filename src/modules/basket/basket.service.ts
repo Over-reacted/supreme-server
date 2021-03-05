@@ -53,7 +53,29 @@ export class BasketService {
 
         if(item){
             item.quantity++;
+            basket.totalSum.centAmount += item.product.price.centAmount;
             await basket.save();
+        }
+        else{
+            throw new NotFoundException(`Product with id: ${productId} not found`);
+        }
+    }
+
+    async decreaseItemQuantity(productId: string): Promise<void>{
+        let basket = await this.getCurrentBasket();
+        let item = basket.items.find(item => item.product._id.toString() === productId);
+
+        if(item){
+            if(item.quantity!==0){
+                item.quantity--;
+                basket.totalSum.centAmount -= item.product.price.centAmount;
+
+                if(item.quantity === 0){
+                    basket.items = basket.items.filter(i => i._id.toString()!==item._id.toString()); //removes the whole item if the item.quantity reaches 0
+                    basket.numOfItems--;
+                }
+                await basket.save();
+            }
         }
         else{
             throw new NotFoundException(`Product with id: ${productId} not found`);
