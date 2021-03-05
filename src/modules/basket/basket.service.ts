@@ -27,4 +27,23 @@ export class BasketService {
 
         return basket[0];
     }
+
+    async addToBasket(productId: string){
+        let basket = await this.getCurrentBasket();
+        let product = await this.productsRepository.findProductById(productId);
+        let productExists = basket.items.some(item => item.product._id.toString() === productId);
+
+        if(!productExists){
+            let newItem = new this.itemModel({
+                product,
+                quantity: 1,
+            });
+            
+            basket.items.push(newItem);
+            basket.totalSum.centAmount += product.price.centAmount;
+            basket.numOfItems++;
+            
+            return await basket.save();
+        }
+    }
 }

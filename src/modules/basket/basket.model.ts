@@ -8,7 +8,7 @@ export const Item = new Schema({
 
 export const Basket = new Schema({
     totalSum:{
-        currency: { type: String, required: false },
+        currency: { type: String, required: false, default: "bgn"},
         centAmount:{ type: Number, required: false, default: 0 },
         fractionDigits:{ type: Number, required: false, default: 0 },
     },
