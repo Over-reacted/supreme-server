@@ -13,6 +13,7 @@ import { AccessControlModule } from "nest-access-control";
 import { roles } from "./app.roles";
 import { ProductsModule } from "modules/products/products.module";
 import { WishlistModule } from "modules/wishlist/wishlist.module";
+import { BasketModule } from "modules/basket/basket.module";
 
 @Module({
   imports: [
@@ -70,6 +71,7 @@ import { WishlistModule } from "modules/wishlist/wishlist.module";
     ProfileModule,
     ProductsModule,
     WishlistModule,
+    BasketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
