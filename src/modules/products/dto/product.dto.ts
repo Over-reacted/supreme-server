@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsCurrency, IsNumber, IsUrl, IsNumberString } from "class-validator";
 
-export class CreateProductDto{
+export class ProductDto{
     @IsString()
     @IsNotEmpty()
     name: string;
@@ -27,7 +27,7 @@ export class CreateProductDto{
 
     @IsNotEmpty()
     @IsNumberString()
-    centamount: number;
+    centAmount: number;
 
     @IsNotEmpty()
     @IsNumberString()

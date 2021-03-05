@@ -24,7 +24,7 @@ export class WishlistService {
     async addToWishlist(productId: string): Promise<void>{
         let wishlist = await this.getCurrentWishlist();
 
-        let product = await this.productsRepository.getProductById(productId);
+        let product = await this.productsRepository.findProductById(productId);
         wishlist.products.push(product);
         wishlist.save();
     }
