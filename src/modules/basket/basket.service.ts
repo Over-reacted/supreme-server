@@ -15,7 +15,7 @@ export class BasketService {
 
     async getBasket(){
         let basket = await this.getCurrentBasket();
-        return {totalSum:basket.totalSum, total: basket.total, numOfItems: basket.numOfItems, items:basket.items };
+        return {totalSum:basket.totalSum, numOfItems: basket.numOfItems, items:basket.items };
     }
 
     private async getCurrentBasket(): Promise<IBasket>{
@@ -42,7 +42,7 @@ export class BasketService {
             basket.items.push(newItem);
             basket.totalSum.centAmount += product.price.centAmount;
             basket.numOfItems++;
-            
+
             return await basket.save();
         }
     }

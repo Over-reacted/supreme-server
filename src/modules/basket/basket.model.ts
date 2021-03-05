@@ -8,11 +8,10 @@ export const Item = new Schema({
 
 export const Basket = new Schema({
     totalSum:{
-        currency: { type: String, required: false, default: "bgn"},
+        currency: { type: String, required: false, default: "BGN"},
         centAmount:{ type: Number, required: false, default: 0 },
-        fractionDigits:{ type: Number, required: false, default: 0 },
+        fractionDigits:{ type: Number, required: false, default: 2 },
     },
-    total: { type: Number, required: false, default: 0 },
     numOfItems: { type: Number, required: false, default: 0 },
     items: { type: [Item], required: false },
   });
@@ -29,7 +28,6 @@ export interface IBasket extends Document{
         centAmount: number;
         fractionDigits: number;
     };
-    total: number;
     numOfItems: number;
     items: [IItem];
 }
