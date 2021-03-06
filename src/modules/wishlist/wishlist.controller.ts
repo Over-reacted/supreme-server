@@ -8,7 +8,6 @@ import { IProduct } from 'modules/products/product.model';
 export class WishlistController {
     constructor(
         private wishlistService: WishlistService,
-        @InjectModel("Product") private readonly productModel: Model<IProduct>,
         ){}
 
     

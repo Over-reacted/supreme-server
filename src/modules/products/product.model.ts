@@ -11,9 +11,9 @@ export const Product = new Schema({
     color: { type: String, required: true },
     description: { type: String, required: true },
     price:{
-        currency: { type: String, required: true },
-        centAmount:{ type: Number, required: true },
-        fractionDigits:{ type: Number, required: true },
+        currency: { type: String, required: true, default: "BGN" },
+        centAmount:{ type: Number, required: true, default: 0 },
+        fractionDigits:{ type: Number, required: true, default: 2 },
     },
     
     image: { type: String, required: true },
