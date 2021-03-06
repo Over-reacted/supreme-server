@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Post, Patch, Delete, Query, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
 import { BasketService } from './basket.service';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'modules/auth/get-user.decorator';
 
 @Controller('basket')
 @UseGuards(AuthGuard("jwt"))
