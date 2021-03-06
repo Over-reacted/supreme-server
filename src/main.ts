@@ -1,9 +1,11 @@
+import * as fs from 'fs';
 import { NestFactory } from "@nestjs/core";
 import * as headers from "helmet";
 import * as rateLimiter from "express-rate-limit";
 import { AppModule } from "./modules/app/app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import path = require('path');
 
 /**
  * The url endpoint for open api ui
@@ -26,9 +28,14 @@ export const SWAGGER_API_DESCRIPTION = "API Description";
  */
 export const SWAGGER_API_CURRENT_VERSION = "1.0";
 
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+};
+
 (async () => {
   const app = await NestFactory.create(AppModule, {
-    logger: console,
+    logger: console, httpsOptions
   });
   const options = new DocumentBuilder()
     .setTitle(SWAGGER_API_NAME)
