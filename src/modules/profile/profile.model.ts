@@ -1,20 +1,23 @@
 import { Schema, Document } from "mongoose";
 import { AppRoles } from "modules/app/app.roles";
+import { Wishlist, IWishlist } from "modules/wishlist/wishlist.model";
+import { Basket, IBasket } from "modules/basket/basket.model";
 
 /**
  * Mongoose Profile Schema
  */
 export const Profile = new Schema({
-  username: { type: String, required: true },
   email: { type: String, required: true },
-  name: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   password: { type: String, required: true },
-  avatar: { type: String, required: true },
   roles: [{ type: String }],
   date: {
     type: Date,
     default: Date.now,
   },
+  wishlist: { type: Wishlist, required: true },
+  basket: { type:Basket, required: true },
 });
 
 /**
@@ -26,25 +29,21 @@ export interface IProfile extends Document {
    */
   readonly _id: Schema.Types.ObjectId;
   /**
-   * Username
-   */
-  readonly username: string;
-  /**
    * Email
    */
   readonly email: string;
   /**
-   * Name
+   * First name
    */
-  readonly name: string;
+  readonly firstName: string;
+    /**
+   * Last name
+   */
+  readonly lastName: string;
   /**
    * Password
    */
   password: string;
-  /**
-   * Gravatar
-   */
-  readonly avatar: string;
   /**
    * Roles
    */
@@ -53,4 +52,8 @@ export interface IProfile extends Document {
    * Date
    */
   readonly date: Date;
+
+  wishlist: IWishlist;
+
+  basket: IBasket;
 }

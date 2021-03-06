@@ -27,7 +27,7 @@ export class WishlistService {
 
         //Checks if product already exists in the current wishlist
         let productExists = wishlist.products.some(p => p._id.toString() === productId);
-        
+
         if(!productExists){
             wishlist.products.push(product);
             wishlist.count++;
@@ -52,7 +52,7 @@ export class WishlistService {
         //Temporary logic to make sure there is one wishlist available at any time.
         //Will be reworked once users are introduced into the project
         if(wishlist.length === 0){
-            let createdWishlist = new this.wishlistModel({count: 0});
+            let createdWishlist = new this.wishlistModel();
             return await createdWishlist.save();
         }
 

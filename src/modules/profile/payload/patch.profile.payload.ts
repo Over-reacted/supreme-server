@@ -20,22 +20,20 @@ export class PatchProfilePayload {
   email: string;
 
   /**
-   * Username field
-   */
-  @ApiProperty({
-    required: true,
-  })
-  @IsAlphanumeric()
-  @IsNotEmpty()
-  username: string;
-
-  /**
-   * Name field
+   * First name field
    */
   @ApiProperty()
   @Matches(/^[a-zA-Z ]+$/)
   @IsNotEmpty()
-  name: string;
+  firstName: string;
+
+  /**
+   * Last name field
+   */
+  @ApiProperty()
+  @Matches(/^[a-zA-Z ]+$/)
+  @IsNotEmpty()
+  lastName: string;
 
   /**
    * Password field

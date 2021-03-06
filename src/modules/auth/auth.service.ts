@@ -55,14 +55,12 @@ export class AuthService {
    */
   async createToken({
     _id,
-    username,
     email,
-    avatar,
   }: IProfile): Promise<ITokenReturnBody> {
     return {
       expires: this.expiration,
       expiresPrettyPrint: AuthService.prettyPrintSeconds(this.expiration),
-      token: this.jwtService.sign({ _id, username, email, avatar }),
+      token: this.jwtService.sign({ _id, email }),
     };
   }
 
@@ -88,8 +86,8 @@ export class AuthService {
    * @returns {Promise<IProfile>} registered profile
    */
   async validateUser(payload: LoginPayload): Promise<IProfile> {
-    const user = await this.profileService.getByUsernameAndPass(
-      payload.username,
+    const user = await this.profileService.getByEmailAndPass(
+      payload.email,
       payload.password,
     );
     if (!user) {

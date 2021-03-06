@@ -30,18 +30,18 @@ export class ProfileController {
 
   /**
    * Retrieves a particular profile
-   * @param username the profile given username to fetch
+   * @param email the profile given email to fetch
    * @returns {Promise<IProfile>} queried profile data
    */
-  @Get(":username")
+  @Get(":email")
   @UseGuards(AuthGuard("jwt"))
   @ApiResponse({ status: 200, description: "Fetch Profile Request Received" })
   @ApiResponse({ status: 400, description: "Fetch Profile Request Failed" })
-  async getProfile(@Param("username") username: string): Promise<IProfile> {
-    const profile = await this.profileService.getByUsername(username);
+  async getProfile(@Param("email") email: string): Promise<IProfile> {
+    const profile = await this.profileService.getByEmail(email);
     if (!profile) {
       throw new BadRequestException(
-        "The profile with that username could not be found.",
+        "The profile with that email could not be found.",
       );
     }
     return profile;
@@ -67,10 +67,10 @@ export class ProfileController {
 
   /**
    * Removes a profile from the database
-   * @param {string} username the username to remove
+   * @param {string} email the email to remove
    * @returns {Promise<IGenericMessageBody>} whether or not the profile has been deleted
    */
-  @Delete(":username")
+  @Delete(":email")
   @UseGuards(AuthGuard("jwt"), ACGuard)
   @UseRoles({
     resource: "profiles",
@@ -80,8 +80,8 @@ export class ProfileController {
   @ApiResponse({ status: 200, description: "Delete Profile Request Received" })
   @ApiResponse({ status: 400, description: "Delete Profile Request Failed" })
   async delete(
-    @Param("username") username: string,
+    @Param("email") email: string,
   ): Promise<IGenericMessageBody> {
-    return await this.profileService.delete(username);
+    return await this.profileService.delete(email);
   }
 }

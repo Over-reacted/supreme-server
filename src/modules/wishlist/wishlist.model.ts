@@ -3,7 +3,7 @@ import { IProduct } from "modules/products/product.model";
 
 export const Wishlist = new Schema({
     products: { type: [], required: false },
-    count: { type: Number, required: false },
+    count: { type: Number, required: true, default: 0 },
   });
 
   export interface IWishlist extends Document{
