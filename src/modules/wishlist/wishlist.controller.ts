@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { IProduct } from 'modules/products/product.model';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'modules/auth/get-user.decorator';
+import { IProfile } from 'modules/profile/profile.model';
 
 @Controller('wishlist')
 @UseGuards(AuthGuard("jwt"))
@@ -15,17 +16,17 @@ export class WishlistController {
 
     
     @Get()
-    async getWishlist(@GetUser() user){
+    async getWishlist(@GetUser() user: IProfile){
         return await this.wishlistService.getWishlist(user);
     }
     
     @Post('/:id')
-    async addToWishlist(@Param('id') productId: string, @GetUser() user): Promise<void>{
+    async addToWishlist(@Param('id') productId: string, @GetUser() user: IProfile): Promise<void>{
         return await this.wishlistService.addToWishlist(productId, user);
     }
 
     @Delete('/:id')
-    async removeFromWishlist(@Param('id') productId: string, @GetUser() user): Promise<void>{
+    async removeFromWishlist(@Param('id') productId: string, @GetUser() user: IProfile): Promise<void>{
         return await this.wishlistService.removeFromWishlist(productId, user);
     }
 }
