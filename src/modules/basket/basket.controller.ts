@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Post, Patch, Delete, Query, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch, Delete, Query, ParseIntPipe, UseGuards, Req, ParseUUIDPipe } from '@nestjs/common';
 import { BasketService } from './basket.service';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'modules/auth/get-user.decorator';
+import { GetUserId } from 'modules/auth/get-user-id.decorator';
 import { IProfile } from 'modules/profile/profile.model';
 
 @Controller('basket')
@@ -10,35 +10,35 @@ export class BasketController {
     constructor(private basketService: BasketService,){}
 
     @Get()
-    async getBasket(@GetUser() user){
-        return await this.basketService.getBasket(user);
+    async getBasket(@GetUserId() userId){
+        return await this.basketService.getBasket(userId);
     }
 
     @Post('/:productId')
-    async addToBasket(@Param('productId') productId: string, @GetUser() user: IProfile): Promise<void>{
-        return await this.basketService.addToBasket(productId, user);
+    async addToBasket(@Param('productId') productId: string, @GetUserId() userId): Promise<void>{
+        return await this.basketService.addToBasket(productId, userId);
     }
 
     @Delete('/:productId')
-    async removeFromBasket(@Param('productId') productId: string, @GetUser() user: IProfile): Promise<void>{
-        return await this.basketService.removeFromBasket(productId, user);
+    async removeFromBasket(@Param('productId') productId: string, @GetUserId() userId: string): Promise<void>{
+        return await this.basketService.removeFromBasket(productId, userId);
     }
 
     @Patch('/:productId/increase')
-    async increaseItemQuantity(@Param('productId') productId: string, @GetUser() user: IProfile): Promise<void>{
-        return await this.basketService.increaseItemQuantity(productId, user);
+    async increaseItemQuantity(@Param('productId') productId: string, @GetUserId() userId: string): Promise<void>{
+        return await this.basketService.increaseItemQuantity(productId, userId);
     }
 
     @Patch('/:productId/decrease')
-    async decreaseItemQuantity(@Param('productId') productId: string, @GetUser() user: IProfile): Promise<void>{
-        return await this.basketService.decreaseItemQuantity(productId, user);
+    async decreaseItemQuantity(@Param('productId') productId: string, @GetUserId() userId: string): Promise<void>{
+        return await this.basketService.decreaseItemQuantity(productId, userId);
     }
 
     @Patch('/:productId')
     async setItemQuantity(
         @Query('quantity',ParseIntPipe) quantity: number, 
         @Param('productId') productId: string, 
-        @GetUser() user: IProfile): Promise<void>{
-        return await this.basketService.setItemQuantity(quantity, productId, user);
+        @GetUserId() userId: string): Promise<void>{
+        return await this.basketService.setItemQuantity(quantity, productId, userId);
     }
 }

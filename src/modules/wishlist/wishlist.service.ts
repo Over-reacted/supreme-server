@@ -14,12 +14,13 @@ export class WishlistService {
         private productsRepository: ProductsRepository,
       ) {}
 
-    async getWishlist(user: IProfile){
-        return {products: user.wishlist.products, count: user.wishlist.count};
+    async getWishlist(userId: string){
+        let wishlist = await this.wishlistRepository.getWishlistByUserId(userId);
+        return { products: wishlist.products, count: wishlist.count };
     }
 
-    async addToWishlist(productId: string, user: IProfile): Promise<void>{
-        let wishlist = user.wishlist;
+    async addToWishlist(productId: string, userId: string): Promise<void>{
+        let wishlist = await this.wishlistRepository.getWishlistByUserId(userId);
         let product = await this.productsRepository.findProductById(productId);
 
         //Checks if product already exists in the current wishlist
@@ -28,17 +29,17 @@ export class WishlistService {
         if(!productExists){
             wishlist.products.push(product);
             wishlist.count++;
-            await user.save();
+            await wishlist.save();
         }
     }
 
-    async removeFromWishlist(productId: string, user: IProfile): Promise<void>{
-        let wishlist = user.wishlist;
+    async removeFromWishlist(productId: string, userId: string): Promise<void>{
+        let wishlist = await this.wishlistRepository.getWishlistByUserId(userId);
 
         if(wishlist.count!==0){ //To ensure there is a product
             wishlist.products = wishlist.products.filter(product => product._id.toString() !== productId);
             wishlist.count--;
-            await user.save();
+            await wishlist.save();
         }
     }
 }

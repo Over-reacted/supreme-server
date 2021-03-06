@@ -92,10 +92,14 @@ export class ProfileService {
     const createdProfile = new this.profileModel({
       ...payload,
       password: crypto.createHmac("sha256", payload.password).digest("hex"),
-      roles: AppRoles.ADMIN,
-      wishlist,
-      basket,
+      wishlistId: wishlist._id,
+      basketId: basket._id,
     });
+
+    wishlist.userId = createdProfile._id;
+    wishlist.save();
+    basket.userId = createdProfile._id;
+    basket.save();
 
     return createdProfile.save();
   }

@@ -7,6 +7,7 @@ export const Item = new Schema({
 });
 
 export const Basket = new Schema({
+    userId: { type: Schema.Types.ObjectId, required: false },
     totalSum:{
         currency: { type: String, required: false, default: "BGN"},
         centAmount:{ type: Number, required: false, default: 0 },
@@ -23,6 +24,7 @@ export interface IItem extends Document{
 
 export interface IBasket extends Document{
     readonly _id: Schema.Types.ObjectId;
+    userId: Schema.Types.ObjectId;
     totalSum: {
         currency: string;
         centAmount: number;

@@ -11,13 +11,13 @@ export const Profile = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   password: { type: String, required: true },
-  roles: [{ type: String }],
+  roles: [{ type: String, required: false }],
   date: {
     type: Date,
     default: Date.now,
   },
-  wishlist: { type: Wishlist, required: true },
-  basket: { type:Basket, required: true },
+  wishlistId: { type: Schema.Types.ObjectId, required: true },
+  basketId: { type: Schema.Types.ObjectId, required: true },
 });
 
 /**
@@ -28,6 +28,11 @@ export interface IProfile extends Document {
    * UUID
    */
   readonly _id: Schema.Types.ObjectId;
+
+  wishlistId: Schema.Types.ObjectId;
+
+  basketId: Schema.Types.ObjectId;
+
   /**
    * Email
    */

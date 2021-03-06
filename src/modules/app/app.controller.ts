@@ -39,6 +39,7 @@ export class AppController {
   @ApiResponse({ status: 200, description: "Request Received" })
   @ApiResponse({ status: 400, description: "Request Failed" })
   getProfile(@Req() req): Partial<Request> {
+    console.log(req);
     return req.user;
   }
 }
