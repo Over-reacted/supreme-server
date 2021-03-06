@@ -1,9 +1,11 @@
-import { Controller, Get, Post, ValidationPipe, UsePipes, Body, Delete, Param, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, ValidationPipe, UsePipes, Body, Delete, Param, Query, Put, UseGuards } from '@nestjs/common';
 import { ProductDto } from './dto/product.dto';
 import { ProductsService } from './products.service';
 import { IProduct } from './product.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('products')
+@UseGuards(AuthGuard("jwt"))
 export class ProductsController {
 
     constructor(private productService: ProductsService){
