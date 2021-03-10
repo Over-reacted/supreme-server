@@ -3,33 +3,26 @@ import { IBasket, IItem } from './basket.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ProductsRepository } from 'modules/products/products.repository';
+import { IProfile } from 'modules/profile/profile.model';
+import { BasketRepository } from './basket.repository';
 
 @Injectable()
 export class BasketService {
 
     constructor(
         private productsRepository: ProductsRepository,
+        private basketRepository: BasketRepository,
         @InjectModel("Basket") private readonly basketModel: Model<IBasket>,
         @InjectModel("Item") private readonly itemModel: Model<IItem>,
     ){}
 
-    async getBasket(){
-        let basket = await this.getCurrentBasket();
+    async getBasket(userId: string){
+        let basket = await this.basketRepository.getBasketByUserId(userId);
         return {totalSum:basket.totalSum, numOfItems: basket.numOfItems, items:basket.items };
     }
 
-    private async getCurrentBasket(): Promise<IBasket>{
-        let basket = await this.basketModel.find();
-        if(basket.length === 0){
-            let createdBasket = new this.basketModel();
-            return await createdBasket.save();
-        }
-
-        return basket[0];
-    }
-
-    async addToBasket(productId: string){
-        let basket = await this.getCurrentBasket();
+    async addToBasket(productId: string, userId: string){
+        let basket = await this.basketRepository.getBasketByUserId(userId); 
         let product = await this.productsRepository.findProductById(productId);
         let productExists = basket.items.some(item => item.product._id.toString() === productId);
 
@@ -47,8 +40,8 @@ export class BasketService {
         }
     }
 
-    async removeFromBasket(productId: string): Promise<void>{
-        let basket = await this.getCurrentBasket();
+    async removeFromBasket(productId: string, userId: string): Promise<void>{
+        let basket = await this.basketRepository.getBasketByUserId(userId);
         let item = basket.items.find(item => item.product._id.toString() === productId);
 
         if(item){
@@ -62,8 +55,8 @@ export class BasketService {
         }
     }
 
-    async increaseItemQuantity(productId: string): Promise<void>{
-        let basket = await this.getCurrentBasket();
+    async increaseItemQuantity(productId: string, userId: string): Promise<void>{
+        let basket = await this.basketRepository.getBasketByUserId(userId);
         let item = basket.items.find(item => item.product._id.toString() === productId);
 
         if(item){
@@ -76,8 +69,8 @@ export class BasketService {
         }
     }
 
-    async decreaseItemQuantity(productId: string): Promise<void>{
-        let basket = await this.getCurrentBasket();
+    async decreaseItemQuantity(productId: string, userId: string): Promise<void>{
+        let basket = await this.basketRepository.getBasketByUserId(userId);
         let item = basket.items.find(item => item.product._id.toString() === productId);
 
         if(item){
@@ -97,12 +90,12 @@ export class BasketService {
         }
     }
 
-    async setItemQuantity(quantity: number, productId: string){
+    async setItemQuantity(quantity: number, productId: string, userId: string){
         if(quantity === 0){
-            await this.removeFromBasket(productId);
+            await this.removeFromBasket(productId, userId);
         }
         else{
-            let basket = await this.getCurrentBasket();
+            let basket = await this.basketRepository.getBasketByUserId(userId);
             let item = basket.items.find(item => item.product._id.toString() === productId);
 
             if(item){
